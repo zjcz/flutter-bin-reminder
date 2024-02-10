@@ -3,6 +3,7 @@ import 'package:bin_reminder/services/database_service.dart';
 import 'package:test/test.dart';
 import 'package:bin_reminder/models/bin.dart';
 import 'package:bin_reminder/helpers/date_helper.dart';
+import 'package:clock/clock.dart';
 
 Future main() async {
   // Setup sqflite_common_ffi for flutter test
@@ -425,6 +426,61 @@ Future main() async {
       expect(bins[1].collectionDate.millisecondsSinceEpoch,
           greaterThanOrEqualTo(DateHelper.getToday().millisecondsSinceEpoch));
       expect(bins[2].collectionDate, b3.collectionDate); // should be unchanged
+    });
+  });
+
+  group('Test list bin objects where the collection is due', () {
+    test('test list due collections returns correct data', () async {
+      DateTime today = DateTime(2024, 1, 1);
+      final fakeClock = Clock(() => today);
+      Bin b1 = Bin(
+          id: null,
+          name: 'new bin',
+          binType: BinType.wheelie,
+          binColor: BinColor.green,
+          collectionDate: DateTime(2024, 1, 1),
+          collectionFrequency: CollectionFrequency.fortnightly,
+          isPaused: false);
+
+      Bin b2 = Bin(
+          id: null,
+          name: 'new bin 2',
+          binType: BinType.industrial,
+          binColor: BinColor.blue,
+          collectionDate: DateTime(2024, 1, 2),
+          collectionFrequency: CollectionFrequency.monthly,
+          isPaused: false);
+
+      Bin b3 = Bin(
+          id: null,
+          name: 'new bin 3',
+          binType: BinType.bag,
+          binColor: BinColor.yellow,
+          collectionDate: DateTime(2024, 1, 3),
+          collectionFrequency: CollectionFrequency.weekly,
+          isPaused: false);
+
+      Bin b4 = Bin(
+          id: null,
+          name: 'new bin 4',
+          binType: BinType.bin,
+          binColor: BinColor.white,
+          collectionDate: DateTime(2024, 1, 1),
+          collectionFrequency: CollectionFrequency.monthly,
+          isPaused: true);
+
+      await withClock(fakeClock, () async {
+        DatabaseService ds = DatabaseService();
+        int newId1 = await ds.insertBin(b1);
+        int newId2 = await ds.insertBin(b2);
+        await ds.insertBin(b3);
+        await ds.insertBin(b4);
+        List<Bin> bins = await ds.listDueBins();
+
+        expect(bins.length, 2);
+        expect(bins[0].id, newId1);
+        expect(bins[1].id, newId2);
+      });
     });
   });
 }

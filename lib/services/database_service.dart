@@ -113,4 +113,21 @@ class DatabaseService {
       await updateBin(updated);
     }
   }
+
+  /// list all bins where the collection is due today or tomorrow
+  Future<List<Bin>> listDueBins() async {
+    // get the cutoff date.
+    // 2 days in the future minus one second will give us tomorrow night
+    final int collectionDueCutoffAsEpoch = DateHelper.getToday()
+        .add(const Duration(days: 2))
+        .subtract(const Duration(seconds: 1))
+        .millisecondsSinceEpoch;
+
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query(Bin.tableName,
+        where: '${Bin.columnIsPaused} = 0 AND ${Bin.columnCollectionDate} < ?',
+        whereArgs: [collectionDueCutoffAsEpoch]);
+
+    return List.generate(maps.length, (index) => Bin.fromMap(maps[index]));
+  }
 }
