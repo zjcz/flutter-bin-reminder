@@ -13,7 +13,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  void initialiseApp() async {
+  Future<void> initialiseApp() async {
     // before loading the app, ensure all the
     // bins have a collection date in the future
     DatabaseService ds = DatabaseService();
@@ -25,7 +25,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     // initialise the background worker task
     await Workmanager().initialize(
-      BackgroundWorker.callbackDispatcher,
+      callbackDispatcher,
       isInDebugMode: true,
     );
 
@@ -49,8 +49,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-
-    initialiseApp();
+    initialiseApp().then((value) => null);
   }
 
   @override

@@ -31,9 +31,9 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      onCreate: (db, version) {
+      onCreate: (db, version) async {
         // Run the CREATE TABLE statement on the database.
-        return db.execute(
+        return await db.execute(
           'CREATE TABLE ${Bin.tableName} (${Bin.columnId} INTEGER PRIMARY KEY, '
           '${Bin.columnName} TEXT, '
           '${Bin.columnBinType} TEXT, '
