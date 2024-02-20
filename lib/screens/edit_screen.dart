@@ -300,7 +300,7 @@ class _EditScreenState extends State<EditScreen> {
     );
 
     if (shouldDiscard ?? false) {
-      if (!context.mounted) return;
+      if (!mounted) return;
       Navigator.of(context).pop();
     }
   }

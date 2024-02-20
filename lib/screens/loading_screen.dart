@@ -38,7 +38,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     // now load the main home page.  We use pushReplacement so the user
     // doesn't return to this screen when exiting the app
-    if (!context.mounted) return;
+    if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) {
         return const HomeScreen();
