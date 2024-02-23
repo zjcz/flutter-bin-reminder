@@ -63,6 +63,23 @@ void main() {
       expect(selection, BinType.bin);
     });
 
+    testWidgets('Testing Bin Type to box', (tester) async {
+      final onSelectionChangedCompleter = Completer<BinType>();
+
+      await tester.pumpWidget(
+          createSelector(null, onSelectionChangedCompleter.complete));
+
+      await tester.tap(find.byType(DropdownMenu<BinType>));
+      await tester.pumpAndSettle();
+      await tester
+          .tap(find.widgetWithText(MenuItemButton, BinType.box.name).last);
+      await tester.pump();
+
+      expect(onSelectionChangedCompleter.isCompleted, isTrue);
+      BinType selection = await onSelectionChangedCompleter.future;
+      expect(selection, BinType.box);
+    });
+
     testWidgets('Testing Bin Type to wheelie', (tester) async {
       final onSelectionChangedCompleter = Completer<BinType>();
 
