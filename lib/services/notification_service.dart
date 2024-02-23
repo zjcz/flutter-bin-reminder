@@ -65,7 +65,8 @@ class NotificationService {
         iOS: DarwinNotificationDetails());
   }
 
-  Future showNotification({int id = 0, String? title, String? body}) async {
+  Future<void> showNotification(
+      {int id = 0, String? title, String? body}) async {
     await flutterLocalNotificationsPlugin.show(
         id, title, body, notificationDetails());
 
