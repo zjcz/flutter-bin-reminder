@@ -7,6 +7,7 @@ import 'package:bin_reminder/helpers/custom_icon_collection_icons.dart';
 enum BinType implements Comparable<BinType> {
   bag(icon: CustomIconCollection.bag),
   bin(icon: FontAwesomeIcons.trash),
+  box(icon: FontAwesomeIcons.boxArchive),
   industrial(icon: FontAwesomeIcons.dumpster),
   wheelie(icon: CustomIconCollection.wheelie);
 
