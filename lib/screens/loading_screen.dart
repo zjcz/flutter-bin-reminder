@@ -26,7 +26,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // initialise the background worker task
     await Workmanager().initialize(
       callbackDispatcher,
-      isInDebugMode: true,
+      isInDebugMode: false,
     );
 
     // trigger the background task to run every hour
