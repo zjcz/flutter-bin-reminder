@@ -2,12 +2,13 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bin_reminder/helpers/date_helper.dart';
+import 'package:bin_reminder/helpers/custom_icon_collection_icons.dart';
 
 enum BinType implements Comparable<BinType> {
-  bag(icon: FontAwesomeIcons.sackXmark),
+  bag(icon: CustomIconCollection.bag),
   bin(icon: FontAwesomeIcons.trash),
   industrial(icon: FontAwesomeIcons.dumpster),
-  wheelie(icon: FontAwesomeIcons.cartFlatbed);
+  wheelie(icon: CustomIconCollection.wheelie);
 
   const BinType({required this.icon});
 
