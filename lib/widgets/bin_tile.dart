@@ -21,7 +21,7 @@ class BinTile extends StatelessWidget {
         DateHelper.getFormattedNextCollectionDate(bin.nextCollectionDate);
 
     return ListTile(
-      tileColor: context.secondaryContainer,
+      tileColor: context.surfaceContainerHighest,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(5)),
       onTap: onEditCallback,
