@@ -28,17 +28,18 @@ class BackgroundWorker {
 
   Future<void> sendNotifications(
       NotificationService notificationService) async {
-    _logger.d('Send notifications');
+    // clear any existing notifications for this bin
+    _logger.d('clear existing notifications');
+    await notificationService.cancelAllNotifications();
 
     List<Bin> bins = await _databaseService.listDueBins();
     _logger.d('${bins.length} bins found with collections due');
 
+    _logger.d('Send notifications');
     for (Bin b in bins) {
       // collection is due, send a notification
-      await notificationService.showNotification(
-          title: 'Bin Reminder',
-          body:
-              '${b.name} is due ${DateHelper.getFormattedNextCollectionDate(b.collectionDate)}');
+      await notificationService.showNotification(b.id!, 'Bin Reminder',
+          '${b.name} is due ${DateHelper.getFormattedNextCollectionDate(b.collectionDate)}');
     }
   }
 }
@@ -49,32 +50,37 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     const dateLastRunSharedPrefSettingName = "bgw_lastchecked";
 
-    Logger l = Logger();
-    l.d('Workmanager.executeTask called for task $task');
+    Logger logger = Logger();
+    logger.d('Workmanager.executeTask called for task $task');
 
-    switch (task) {
-      case BackgroundWorker.backgroundWorkerTaskKey:
-        final prefs = await SharedPreferences.getInstance();
-        String? dateLastRunSetting =
-            prefs.getString(dateLastRunSharedPrefSettingName);
+    try {
+      switch (task) {
+        case BackgroundWorker.backgroundWorkerTaskKey:
+          final prefs = await SharedPreferences.getInstance();
+          String? dateLastRunSetting =
+              prefs.getString(dateLastRunSharedPrefSettingName);
 
-        DateTime dateLastRun = (dateLastRunSetting == null
-            ? DateHelper.getToday()
-            : DateTime.parse(dateLastRunSetting));
-        l.d('Last run date = $dateLastRun');
+          DateTime dateLastRun = (dateLastRunSetting == null
+              ? DateHelper.getToday()
+              : DateTime.parse(dateLastRunSetting));
+          logger.d('Last run date = $dateLastRun');
 
-        if (dateLastRun.isBefore(DateHelper.getToday())) {
-          l.d('Last run date is in the past, run background tasks');
-          // scheduled job last ran yesterday.  Run it now
-          BackgroundWorker dw =
-              BackgroundWorker(databaseService: DatabaseService());
-          await dw.cleanUpCollectionDates();
-          await dw.sendNotifications(NotificationService());
-        }
+          if (dateLastRun.isBefore(DateHelper.getToday())) {
+            logger.d('Last run date is in the past, run background tasks');
+            // scheduled job last ran yesterday.  Run it now
+            BackgroundWorker dw = BackgroundWorker(
+              databaseService: DatabaseService(),
+            );
+            await dw.cleanUpCollectionDates();
+            await dw.sendNotifications(NotificationService());
+          }
 
-        prefs.setString(dateLastRunSharedPrefSettingName,
-            DateHelper.getToday().toIso8601String());
-        break;
+          await prefs.setString(dateLastRunSharedPrefSettingName,
+              DateHelper.getToday().toIso8601String());
+          break;
+      }
+    } catch (e, s) {
+      logger.e('Error running background task', error: e, stackTrace: s);
     }
 
     return Future.value(true);
