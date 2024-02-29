@@ -40,7 +40,7 @@ class NotificationService {
     }
 
     AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@drawable/ic_notify_icon');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
@@ -65,10 +65,16 @@ class NotificationService {
         iOS: DarwinNotificationDetails());
   }
 
-  Future<void> showNotification(
-      {int id = 0, String? title, String? body}) async {
+  Future<void> showNotification(int id, String title, String body) async {
     await flutterLocalNotificationsPlugin.show(
         id, title, body, notificationDetails());
+
+    return;
+  }
+
+  /// Cancel a notification for the given id
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
 
     return;
   }
