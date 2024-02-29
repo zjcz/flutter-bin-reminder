@@ -72,7 +72,6 @@ class NotificationService {
     return;
   }
 
-  /// Cancel a notification for the given id
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
 
