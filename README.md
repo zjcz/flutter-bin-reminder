@@ -1,5 +1,8 @@
 # 🗑️ Flutter Bin Reminder App
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Flutter Version](https://img.shields.io/badge/Flutter-^3.35.3-blue.svg)](https://flutter.dev/)
+
 ## 📱 Description
 This application allows the user to enter the details about their bins (type, colour, etc) and the app will provide a notification to remind them to put them out for collection.
 
@@ -53,8 +56,12 @@ I have written a number of unit tests to test the basic functionality of the app
 flutter test
 ```
 
+## 🚂 Motivation
+
+This is the first Flutter app I developed as part of the learning process.  It lacks many production ready features and is not intended for release.  Feel free to fork the repo and build the app yourself for your own use.
+
 ## 📝 License
-This project is licensed under the terms of the MIT License.
+This project is licensed under the GNU General Public License v3.0 - see the [license.md](license.md) file for details.
 
 ## 📬 Request
-While not a requirement of the MIT License, I kindly request that you reach out to me if you plan to use this code for your own project. I'd love to hear if you find this useful!
+While not a requirement of the license, I kindly request that you reach out to me if you plan to use this code for your own project. I'd love to hear if you find this useful!

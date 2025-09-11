@@ -47,7 +47,7 @@ enum BinColor implements Comparable<BinColor> {
   const BinColor({required this.baseColor});
 
   @override
-  int compareTo(BinColor other) => baseColor.value - other.baseColor.value;
+  int compareTo(BinColor other) => baseColor.toARGB32() - other.baseColor.toARGB32();
 
   final Color baseColor;
 }
