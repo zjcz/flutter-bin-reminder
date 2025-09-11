@@ -84,7 +84,7 @@ class _EditScreenState extends State<EditScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Form(
             canPop: !_unsavedChanges,
-            onPopInvoked: (bool didPop) {
+            onPopInvokedWithResult: (bool didPop, _) {
               if (didPop) {
                 return;
               }
