@@ -34,7 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         BackgroundWorker.backgroundWorkerUniqueName,
         BackgroundWorker.backgroundWorkerTaskKey,
         frequency: const Duration(hours: 1),
-        existingWorkPolicy: ExistingWorkPolicy.keep);
+        existingWorkPolicy: ExistingPeriodicWorkPolicy.keep);
 
     // now load the main home page.  We use pushReplacement so the user
     // doesn't return to this screen when exiting the app
